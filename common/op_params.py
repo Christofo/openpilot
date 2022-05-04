@@ -161,20 +161,24 @@ class opParams:
   
     VT = ValueTypes()
     self.fork_params = {
-                        LAT_KP_BP: Param([0., 16.5, 26.8,35.], [list, float, int], live=True),
-                        LAT_KP_V: Param([0.15, 0.1, 0.185, 0.23], [list, float, int], live=True),
-                        LAT_KI_BP: Param([0., 16.5, 26.8,35.], [list, float, int], live=True),
-                        LAT_KI_V: Param([0.015, 0.005, 0.00085, 0.000005], [list, float, int], live=True),
+                        LAT_KP_BP: Param([0., 25.,], [list, float, int], live=True),
+                        LAT_KP_V: Param([0.12, 0.12], [list, float, int], live=True),
+                        LAT_KI_BP: Param([0.,25.], [list, float, int], live=True),
+                        LAT_KI_V: Param([0., 0.0001], [list, float, int], live=True),
                         LAT_KD_BP: Param([0.,25.], [list, float, int], live=True),
                         LAT_KD_V: Param([0., 0.001], [list, float, int], live=True),
                         LAT_KF: Param(6e-6, VT.number, live=True),
+                        #MAX_TORQUE: Param(3.6, VT.number, live=True),
+                        #FRICTION: Param(0.001, VT.number, live=True),
+                        STEER_ACT_DELAY: Param(0.16, VT.number, live=True),
+                        STEER_RATE_COST: Param(0.7, VT.number, live=True),
+                        DEVICE_OFFSET: Param(0.0, VT.number, live=True),
                         
                         SHOW_RATE_PARAMS: Param(False, [bool], live=True),
                         ENABLE_RATE_PARAMS: Param(False, [bool], live=True, depends_on=SHOW_RATE_PARAMS),
-                        STOCK_DELTA_UP: Param(14, VT.number, live=True ,depends_on=SHOW_RATE_PARAMS),
-                        STOCK_DELTA_DOWN: Param(14, VT.number, live=True ,depends_on=SHOW_RATE_PARAMS),
-                        STOCK_STEER_MAX: Param(360, VT.number, live=True ,depends_on=SHOW_RATE_PARAMS),
-		                  	STEER_ACT_DELAY: Param(0.152, VT.number, live=True)
+                        STOCK_DELTA_UP: Param(12, VT.number, live=True ,depends_on=SHOW_RATE_PARAMS),
+                        STOCK_DELTA_DOWN: Param(12, VT.number, live=True ,depends_on=SHOW_RATE_PARAMS),
+                        STOCK_STEER_MAX: Param(350, VT.number, live=True ,depends_on=SHOW_RATE_PARAMS),
 }
 
     self._params_file = '/data/op_params.json'
@@ -319,13 +323,15 @@ class opParams:
 SHOW_INDI_PARAMS = 'show_indi_params'
 ENABLE_INDI_BREAKPOINTS = 'enable_indi_breakpoints'
 
-LAT_KP_BP = 'lat_kp_bp'
-LAT_KP_V = 'lat_kp_v'
-LAT_KI_BP = 'lat_ki_bp'
-LAT_KI_V = 'lat_ki_v'
-LAT_KD_BP = 'lat_kd_bp'
-LAT_KD_V = 'lat_kd_v'
-LAT_KF = 'lat_kf'
+ LAT_KP_BP = 'lat_kp_bp'
+ LAT_KP_V = 'lat_kp_v'
+ LAT_KI_BP = 'lat_ki_bp'
+ LAT_KI_V = 'lat_ki_v'
+ LAT_KD_BP = 'lat_kd_bp'
+ LAT_KD_V = 'lat_kd_v'
+ LAT_KF = 'lat_kf'
+#MAX_TORQUE = 'max_torque'
+#FRICTION = 'friction'
 
 SHOW_RATE_PARAMS = 'show_rate_params'
 ENABLE_RATE_PARAMS = 'enable_rate_params'
@@ -334,3 +340,5 @@ STOCK_DELTA_DOWN = 'stock_delta_down'
 STOCK_STEER_MAX = 'stock_steer_max'
 STEER_ACT_DELAY = 'steer_act_delay'
 STEER_RATIO = 'steer ratio'
+STEER_RATE_COST = 'steer_rate_cost'
+DEVICE_OFFSET = 'device_offset'
