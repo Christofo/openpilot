@@ -7,10 +7,10 @@ const int CHRYSLER_MAX_TORQUE_ERROR = 100;    // max torque cmd in excess of tor
 const int CHRYSLER_GAS_THRSLD = 7.7;  // 7% more than 2m/s changed from wheel rpm to km/h 
 const int CHRYSLER_STANDSTILL_THRSLD = 3.6;  // about 1m/s changed from wheel rpm to km/h 
 const int RAM_MAX_STEER = 450; 
-const int RAM_MAX_RT_DELTA = 650;        // since 3 x the rate up from chrsyler, 3x this also NEEDS CONFIRMED
-const int RAM_MAX_RATE_UP = 250;
-const int RAM_MAX_RATE_DOWN = 250;
-const int RAM_MAX_TORQUE_ERROR = 500;    // since 3 x the rate up from chrsyler, 3x this also NEEDS CONFIRMED
+const int RAM_MAX_RT_DELTA = 800;        // since 3 x the rate up from chrsyler, 3x this also NEEDS CONFIRMED
+const int RAM_MAX_RATE_UP = 800;
+const int RAM_MAX_RATE_DOWN = 800;
+const int RAM_MAX_TORQUE_ERROR = 800;    // since 3 x the rate up from chrsyler, 3x this also NEEDS CONFIRMED
 
 
 // Safety-relevant CAN messages for Chrysler/Jeep platforms
