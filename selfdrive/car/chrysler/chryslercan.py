@@ -102,6 +102,8 @@ def create_lkas_command(packer, apply_steer, moving_fast, frame):
 def create_wheel_buttons(packer, CS, fingerprint, cancel = False, acc_resume = False):
   # Cruise_Control_Buttons Message sent to cancel ACC.
   frame = CS.ccbuttoncounter + 1
+  if frame > 15:
+    frame = 0
   values = {
     "ACC_Cancel": cancel,
     "COUNTER": frame,
