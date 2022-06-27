@@ -79,7 +79,7 @@ class CarController:
       self.apply_steer_last = apply_steer
       self.lkascativevalueprev = self.lkasactivevalue
         
-      can_sends.append(create_speed_spoof(self.packer, CS.esp8_counter, self.spoofspeed))
+      # can_sends.append(create_speed_spoof(self.packer, CS.esp8_counter, self.spoofspeed))
       can_sends.append(create_lkas_command(self.packer, int(apply_steer), self.lkasactivevalue, CS.lkas_counter,1))
       can_sends.append(create_lkas_command(self.packer, int(apply_steer), self.lkasactivevalue, CS.lkas_counter,0))
 
