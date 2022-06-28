@@ -6,7 +6,7 @@ from selfdrive.car.chrysler.values import CAR
 GearShifter = car.CarState.GearShifter
 VisualAlert = car.CarControl.HUDControl.VisualAlert
 
-def create_lkas_hud(packer, lkas_active, hud_alert, hud_count, CS, fingerprint, bus):
+def create_lkas_hud(packer, lkas_active, hud_alert, hud_count, CS, fingerprint):
   # LKAS_HUD 0x2a6 (678) Controls what lane-keeping icon is displayed.
 
   #if hud_alert in (VisualAlert.steerRequired):
@@ -86,32 +86,29 @@ def create_lkas_hud(packer, lkas_active, hud_alert, hud_count, CS, fingerprint, 
 
   
 
-  return packer.make_can_msg("DAS_6", bus, values)
+  return packer.make_can_msg("DAS_6", 0, values)
 
 
-def create_lkas_command(packer, apply_steer, moving_fast, frame, bus):
+def create_lkas_command(packer, apply_steer, moving_fast, frame):
   # LKAS_COMMAND Lane-keeping signal to turn the wheel.
   values = {
     "LKAS_STEERING_TORQUE": apply_steer,
     "LKAS_CONTROL_BIT": int(moving_fast),
     "COUNTER": frame % 0x10,
   }
-  return packer.make_can_msg("LKAS_COMMAND", bus, values)
+  return packer.make_can_msg("LKAS_COMMAND", 0, values)
 
-def create_wheel_buttons(packer, frame, bus, cancel = False, acc_resume = False):
+
+def create_wheel_buttons(packer, frame, fingerprint, cancel = False, acc_resume = False):
   # Cruise_Control_Buttons Message sent to cancel ACC.
   values = {
     "ACC_Cancel": cancel,
     "COUNTER": frame % 0x10,
     "ACC_Resume": acc_resume,
   }
+  if fingerprint in (CAR.RAM_1500, CAR.RAM_2500):
+    bus = 2
+  else:
+    bus = 0 
 
   return packer.make_can_msg("Cruise_Control_Buttons", bus, values)
-
-def create_speed_spoof(packer, frame, spoofspeed):
-  # Cruise_Control_Buttons Message sent to cancel ACC.
-  values = {
-    "Vehicle_Speed": spoofspeed,
-    "COUNTER": frame % 0x10,
-  }
-  return packer.make_can_msg("ESP_8", 1, values)

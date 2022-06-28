@@ -84,7 +84,7 @@ class CarInterface(CarInterfaceBase):
     events = self.create_common_events(ret, extra_gears=[car.CarState.GearShifter.low])
 
     # Low speed steer alert hysteresis logic
-    if self.CP.minSteerSpeed > 0. and ret.vEgo < (self.CP.minSteerSpeed -0.25):
+    if self.CP.minSteerSpeed > 0. and ret.vEgo < (self.CP.minSteerSpeed -0.5):
       self.low_speed_alert = True
     elif ret.vEgo > (self.CP.minSteerSpeed):
       self.low_speed_alert = False
@@ -98,4 +98,4 @@ class CarInterface(CarInterfaceBase):
   # pass in a car.CarControl
   # to be called @ 100hz
   def apply(self, c):
-    return self.CC.update(c, self.CS, self.low_speed_alert)
+    return self.CC.update(c, self.CS)
