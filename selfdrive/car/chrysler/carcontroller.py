@@ -93,7 +93,7 @@ class CarController:
         can_sends.append(create_lkas_hud(self.packer, lkas_active, CC.hudControl.visualAlert, self.hud_count, CS, self.car_fingerprint, 1))
         self.hud_count += 1
 
-    can_sends.append(create_speed_spoof(self.packer, CS.esp8_counter, CS.out.vEgoRaw ))
+    can_sends.append(create_speed_spoof(self.packer, CS.esp8_counter + 1, CS.out.vEgoRaw ))
     can_sends.append(create_lkas_command(self.packer, int(apply_steer), self.gone_fast_yet, CS.lkas_counter, 0))
     can_sends.append(create_lkas_command(self.packer, int(apply_steer), self.gone_fast_yet, CS.lkas_counter, 1))
 
