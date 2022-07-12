@@ -1,7 +1,7 @@
 from cereal import car
 from opendbc.can.packer import CANPacker
 from selfdrive.car import apply_toyota_steer_torque_limits
-from selfdrive.car.chrysler.chryslercan import create_lkas_hud, create_lkas_command, create_wheel_buttons, create_speed_spoof
+from selfdrive.car.chrysler.chryslercan import create_lkas_hud, create_lkas_command, create_wheel_buttons
 from selfdrive.car.chrysler.values import CAR, CarControllerParams, STEER_MAX_LOOKUP, STEER_DELTA_UP, STEER_DELTA_DOWN
 
 
@@ -81,9 +81,9 @@ class CarController:
     #*** control msgs ***
 
     if CC.cruiseControl.cancel:
-      can_sends.append(create_wheel_buttons(self.packer, CS.button_counter + 1, 2, cancel=True, acc_resume = False))
+      can_sends.append(create_wheel_buttons(self.packer, CS.button_counter + 1, self.car_fingerprint, cancel=True, acc_resume = False))
     elif CS.out.cruiseState.standstill:
-      can_sends.append(create_wheel_buttons(self.packer, CS.button_counter + 1, 2, cancel=False, acc_resume = True))
+      can_sends.append(create_wheel_buttons(self.packer, CS.button_counter + 1, self.car_fingerprint, cancel=False, acc_resume = True))
 
     # LKAS_HEARTBIT is forwarded by Panda so no need to send it here.
     # frame is 50Hz (0.02s period) #Becuase we skip every other frame
@@ -93,7 +93,6 @@ class CarController:
         can_sends.append(create_lkas_hud(self.packer, lkas_active, CC.hudControl.visualAlert, self.hud_count, CS, self.car_fingerprint, 1))
         self.hud_count += 1
 
-    can_sends.append(create_speed_spoof(self.packer, CS.esp8_counter + 1, CS.out.vEgoRaw ))
     can_sends.append(create_lkas_command(self.packer, int(apply_steer), self.gone_fast_yet, CS.lkas_counter, 0))
     can_sends.append(create_lkas_command(self.packer, int(apply_steer), self.gone_fast_yet, CS.lkas_counter, 1))
 
