@@ -14,8 +14,7 @@ class CarInterface(CarInterfaceBase):
 
     ret.radarOffCan = DBC[candidate]['radar'] is None
 
-    param = Panda.FLAG_CHRYSLER_RAM_DT if candidate in RAM_CARS else None
-    ret.safetyConfigs = [get_safety_config(car.CarParams.SafetyModel.chrysler, param)]
+    
 
     ret.steerActuatorDelay = 0.1
     ret.steerLimitTimer = 0.4
@@ -33,6 +32,7 @@ class CarInterface(CarInterfaceBase):
       ret.lateralTuning.pid.kpBP, ret.lateralTuning.pid.kiBP = [[9., 20.], [9., 20.]]
       ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.15, 0.30], [0.03, 0.05]]
       ret.lateralTuning.pid.kf = 0.00006
+      param = None
 
     # Jeep
     elif candidate in (CAR.JEEP_CHEROKEE, CAR.JEEP_CHEROKEE_2019):
@@ -43,21 +43,33 @@ class CarInterface(CarInterfaceBase):
       ret.lateralTuning.pid.kpBP, ret.lateralTuning.pid.kiBP = [[9., 20.], [9., 20.]]
       ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.15, 0.30], [0.03, 0.05]]
       ret.lateralTuning.pid.kf = 0.00006
+      param = None
 
     # Ram
     elif candidate == CAR.RAM_1500:
       ret.steerActuatorDelay = 0.2
-
       ret.wheelbase = 3.88
       ret.steerRatio = 16.3
       ret.mass = 2493. + STD_CARGO_KG
       ret.maxLateralAccel = 2.4
       ret.minSteerSpeed = 14.5
+      param = Panda.FLAG_CHRYSLER_RAM_DT
       CarInterfaceBase.configure_torque_tune(candidate, ret.lateralTuning)
 
+    elif candidate == CAR.RAM_2500:
+      ret.steerActuatorDelay = 0.115
+      ret.wheelbase = 3.785  # in meters
+      ret.steerRatio = 15.61
+      ret.mass = 3405. + STD_CARGO_KG
+      ret.maxLateralAccel = 1.2
+      ret.minSteerSpeed = 16.5
+      param = Panda.FLAG_CHRYSLER_RAM_HD
+      CarInterfaceBase.configure_torque_tune(candidate, ret.lateralTuning)
 
     else:
       raise ValueError(f"Unsupported car: {candidate}")
+
+    ret.safetyConfigs = [get_safety_config(car.CarParams.SafetyModel.chrysler, param)]
 
     ret.centerToFront = ret.wheelbase * 0.44
 
