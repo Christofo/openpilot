@@ -67,10 +67,10 @@ class CarInterface(CarInterfaceBase):
       param = Panda.FLAG_CHRYSLER_RAM_HD
       CarInterfaceBase.configure_torque_tune(candidate, ret.lateralTuning)
 
-    ret.safetyConfigs = [get_safety_config(car.CarParams.SafetyModel.chrysler, param)]
-
     else:
       raise ValueError(f"Unsupported car: {candidate}")
+
+    ret.safetyConfigs = [get_safety_config(car.CarParams.SafetyModel.chrysler, param)]
 
     ret.centerToFront = ret.wheelbase * 0.44
 
