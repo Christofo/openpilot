@@ -56,7 +56,7 @@ class CarInterface(CarInterfaceBase):
       param = Panda.FLAG_CHRYSLER_RAM_DT
       CarInterfaceBase.configure_torque_tune(candidate, ret.lateralTuning)
 
-    elif candidate == CAR.RAM_2500:
+    elif candidate == CAR.RAM_HD:
       ret.steerActuatorDelay = 0.115
       ret.wheelbase = 3.785  # in meters
       ret.steerRatio = 15.61
