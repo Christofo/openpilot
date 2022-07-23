@@ -21,7 +21,7 @@ class CarState(CarStateBase):
     else:
       self.shifter_values = can_define.dv["GEAR"]["PRNDL"]
 
-  def update(self, cp, cp_cam):
+  def update(self, cp, cp_cam, cp_eps):
 
     ret = car.CarState.new_message()
 
@@ -65,8 +65,8 @@ class CarState(CarStateBase):
     # steering wheel
     ret.steeringAngleDeg = cp.vl["STEERING"]["STEER_ANGLE"]
     ret.steeringRateDeg = cp.vl["STEERING"]["STEERING_RATE"]
-    ret.steeringTorque = cp.vl["EPS_2"]["COLUMN_TORQUE"]
-    ret.steeringTorqueEps = cp.vl["EPS_2"]["EPS_TORQUE_MOTOR"]
+    ret.steeringTorque = cp_eps.vl["EPS_2"]["COLUMN_TORQUE"]
+    ret.steeringTorqueEps = cp_eps.vl["EPS_2"]["EPS_TORQUE_MOTOR"]
     ret.steeringPressed = abs(ret.steeringTorque) > STEER_THRESHOLD
 
     # cruise state
@@ -81,9 +81,9 @@ class CarState(CarStateBase):
 
     if self.CP.carFingerprint in RAM_CARS:
       self.auto_high_beam = cp_cam.vl["DAS_6"]['AUTO_HIGH_BEAM_ON']  # Auto High Beam isn't Located in this message on chrysler or jeep currently located in 729 message
-      ret.steerFaultTemporary  = cp.vl["EPS_3"]["DASM_FAULT"] == 1
+      ret.steerFaultTemporary  = cp_eps.vl["EPS_3"]["DASM_FAULT"] == 1
     else:
-      ret.steerFaultPermanent = cp.vl["EPS_2"]["LKAS_STATE"] == 4
+      ret.steerFaultPermanent = cp_eps.vl["EPS_2"]["LKAS_STATE"] == 4
 
     # blindspot sensors
     if self.CP.enableBsm:
@@ -131,17 +131,12 @@ class CarState(CarStateBase):
       ("TURN_SIGNALS", "STEERING_LEVERS"),
       ("HIGH_BEAM_PRESSED", "STEERING_LEVERS"),
       ("SEATBELT_DRIVER_UNLATCHED", "ORC_1"),
-      ("COUNTER", "EPS_2",),
-      ("COLUMN_TORQUE", "EPS_2"),
-      ("EPS_TORQUE_MOTOR", "EPS_2"),
-      ("LKAS_STATE", "EPS_2"),
       ("COUNTER", "CRUISE_BUTTONS"),
     ]
 
     checks = [
       # sig_address, frequency
       ("ESP_1", 50),
-      ("EPS_2", 100),
       ("ESP_6", 50),
       ("STEERING", 100),
       ("ECM_5", 50),
@@ -160,13 +155,11 @@ class CarState(CarStateBase):
 
     if CP.carFingerprint in RAM_CARS:
       signals += [
-        ("DASM_FAULT", "EPS_3"),
         ("Vehicle_Speed", "ESP_8"),
         ("Gear_State", "Transmission_Status"),
       ]
       checks += [
         ("ESP_8", 50),
-        ("EPS_3", 50),
         ("Transmission_Status", 50),
       ]
     else:
@@ -202,3 +195,26 @@ class CarState(CarStateBase):
       checks += CarState.get_cruise_signals()[1]
 
     return CANParser(DBC[CP.carFingerprint]["pt"], signals, checks, 2)
+
+  @staticmethod
+  def get_eps_can_parser(CP):
+    signals = [
+      ("COUNTER", "EPS_2",),
+      ("COLUMN_TORQUE", "EPS_2"),
+      ("EPS_TORQUE_MOTOR", "EPS_2"),
+      ("LKAS_STATE", "EPS_2"),
+    ]
+    checks = [
+      ("EPS_2", 100),
+    ]
+
+    if CP.carFingerprint in RAM_CARS:
+      signals += [
+        ("DASM_FAULT", "EPS_3"),
+      ]
+
+      checks += [
+        ("EPS_3", 50),
+        ]
+
+    return CANParser(DBC[CP.carFingerprint]["pt"], signals, checks, 1)
