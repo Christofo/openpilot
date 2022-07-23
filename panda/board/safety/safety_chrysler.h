@@ -261,7 +261,7 @@ static int chrysler_tx_hook(CANPacket_t *to_send, bool longitudinal_allowed) {
     }
 
     if (violation) {
-      tx = 0;
+      //tx = 0;
     }
   }
 
