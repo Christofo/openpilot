@@ -27,21 +27,28 @@ class CAR:
 
 
 class CarControllerParams:
-  def __init__(self, CP):
-    self.STEER_ERROR_MAX = 80
+  def __init__(self, CP):  
 
-    if CP.carFingerprint in RAM_CARS:
+    if CP.carFingerprint in RAM_HD:
+      self.STEER_DELTA_UP = 14
+      self.STEER_DELTA_DOWN = 14
+      self.STEER_MAX = 361 # higher than this faults the EPS
+      self.STEER_ERROR_MAX = 200
+    elif CP.carFingerprint in RAM_CARS:
       self.STEER_DELTA_UP = 6
       self.STEER_DELTA_DOWN = 6
       self.STEER_MAX = 350 # higher than this faults the EPS
+      self.STEER_ERROR_MAX = 80
     else:
       self.STEER_DELTA_UP = 3
       self.STEER_DELTA_DOWN = 3
       self.STEER_MAX = 261  # higher than this faults the EPS
+      self.STEER_ERROR_MAX = 80
 
 STEER_THRESHOLD = 120
 
 RAM_CARS = {CAR.RAM_1500, CAR.RAM_2500}
+RAM_HD = {CAR.RAM_2500}
 
 @dataclass
 class ChryslerCarInfo(CarInfo):
@@ -163,9 +170,9 @@ FW_VERSIONS: Dict[str, Dict[Tuple[capnp.lib.capnp._EnumModule, int, Optional[int
       b'68552788AA',
       b'68466110AB',
       b'68440789AC',
-      b'68312176AG',
       b'68552790AA',
       b'68312176AE', #S0
+      b'68312176AG', #S0
       b'68273275AG', #S0
     ],
     (Ecu.engine, 0x7e0, None): [

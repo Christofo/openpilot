@@ -48,7 +48,7 @@ class CarInterface(CarInterfaceBase):
     # Ram
     elif candidate == CAR.RAM_1500:
       ret.steerActuatorDelay = 0.2
-      ret.wheelbase = 3.88
+      ret.wheelbase = 3.67
       ret.steerRatio = 16.3
       ret.mass = 2493. + STD_CARGO_KG
       ret.maxLateralAccel = 2.4
@@ -64,7 +64,7 @@ class CarInterface(CarInterfaceBase):
       ret.maxLateralAccel = 1.2
       ret.minSteerSpeed = 16
       param = Panda.FLAG_CHRYSLER_RAM_HD
-      CarInterfaceBase.configure_torque_tune(candidate, ret.lateralTuning)
+      CarInterfaceBase.configure_torque_tune(candidate, ret.lateralTuning, 0, False)
 
     else:
       raise ValueError(f"Unsupported car: {candidate}")
@@ -83,7 +83,7 @@ class CarInterface(CarInterfaceBase):
     ret.enableBsm = 720 in fingerprint[0]
 
     for fw in car_fw:
-      if fw.ecu == "eps" and (b"68312176AE" or b"68273275AG") in fw.fwVersion:
+      if fw.ecu == "eps" and (b"68312176AE" or b"68312176AG" or b"68273275AG") in fw.fwVersion:
         ret.minSteerSpeed = 0.25
 
     return ret
