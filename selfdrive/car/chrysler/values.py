@@ -28,9 +28,13 @@ class CAR:
 
 class CarControllerParams:
   def __init__(self, CP):
-    self.STEER_ERROR_MAX = 80
+    self.STEER_ERROR_MAX = 200
 
-    if CP.carFingerprint in RAM_CARS:
+    if CP.carFingerprint in RAM_HD:
+      self.STEER_DELTA_UP = 14
+      self.STEER_DELTA_DOWN = 14
+      self.STEER_MAX = 361 # higher than this faults the EPS
+    elif CP.carFingerprint in RAM_CARS:
       self.STEER_DELTA_UP = 6
       self.STEER_DELTA_DOWN = 6
       self.STEER_MAX = 350 # higher than this faults the EPS
@@ -42,6 +46,7 @@ class CarControllerParams:
 STEER_THRESHOLD = 120
 
 RAM_CARS = {CAR.RAM_1500, CAR.RAM_2500}
+RAM_HD = {CAR.RAM_2500}
 
 @dataclass
 class ChryslerCarInfo(CarInfo):
