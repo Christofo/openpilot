@@ -5,7 +5,7 @@ CM_ "Imported file _stellantis_common.dbc starts here";
 BO_ 258 STEERING: 8 XXX
  SG_ STEER_ANGLE : 5|14@0+ (0.5,-2048) [-2048|2047] "deg" XXX
  SG_ STEERING_RATE : 21|14@0+ (0.5,-2048) [-2048|2047] "deg/s" XXX
- SG_ UNKNOWN_STEERING : 50|3@0+ (1,0) [0|15] "" XXX
+ SG_ STEERING_ANGLE_HP : 48|4@1+ (0.1,-0.4) [-0.4|0.4] "Degrees" XXX
  SG_ COUNTER : 55|4@0+ (1,0) [0|15] "" XXX
  SG_ CHECKSUM : 63|8@0+ (1,0) [0|255] "" XXX
 
