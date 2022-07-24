@@ -64,7 +64,7 @@ class CarInterface(CarInterfaceBase):
       ret.maxLateralAccel = 1.2
       ret.minSteerSpeed = 16.0
       param = Panda.FLAG_CHRYSLER_RAM_HD
-      CarInterfaceBase.configure_torque_tune(candidate, ret.lateralTuning)
+      CarInterfaceBase.configure_torque_tune(candidate, ret.lateralTuning, 0, False)
 
     else:
       raise ValueError(f"Unsupported car: {candidate}")

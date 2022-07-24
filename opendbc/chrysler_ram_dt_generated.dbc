@@ -8,6 +8,7 @@ BO_ 35 STEERING: 8 XXX
  SG_ STEER_ANGLE : 5|14@0+ (0.5,-2048) [-2048|2047] "deg" XXX
  SG_ STEERING_RATE : 21|14@0+ (0.5,-2048) [-2048|2047] "deg/s" XXX
  SG_ UNKNOWN_STEERING : 50|3@0+ (1,0) [0|15] "" XXX
+ SG_ STEERING_ANGLE_HP : 48|4@1+ (0.1,-0.4) [-0.4|0.4] "deg"  XXX
  SG_ COUNTER : 55|4@0+ (1,0) [0|15] "" XXX
  SG_ CHECKSUM : 63|8@0+ (1,0) [0|255] "" XXX
 
@@ -166,7 +167,7 @@ BO_ 221 Center_Stack_1: 8 XXX
 BO_ 650 Center_Stack_2: 8 XXX
  SG_ LKAS_Button : 57|1@1+ (1,0) [0|0] "" XXX
 
-
+CM_ SG_ 35 STEERING_ANGLE_HP "Steering angle high precision";
 CM_ SG_ 133 ACTUAL_GEAR "0xd = P, 0x1-8 = D (actual gear), 0xb = R or N?? TODO find R vs N";
 CM_ SG_ 153 ACC_Engaged "SENT BY FORWARD CAMERA 1 = ACTIVE, 3 = ENGAGED, 0 = DISENGAGED/OFF";
 CM_ SG_ 166 LKAS_CONTROL_BIT "0=IDLE, 1=HAS 2=LKAS 3=ABSD, 4=TJA, 7=SNA";
