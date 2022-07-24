@@ -52,7 +52,7 @@ class CarInterface(CarInterfaceBase):
       ret.steerRatio = 16.3
       ret.mass = 2493. + STD_CARGO_KG
       ret.maxLateralAccel = 2.4
-      ret.minSteerSpeed = 0.25
+      ret.minSteerSpeed = 14.5
       param = Panda.FLAG_CHRYSLER_RAM_DT
       CarInterfaceBase.configure_torque_tune(candidate, ret.lateralTuning)
 
@@ -62,7 +62,7 @@ class CarInterface(CarInterfaceBase):
       ret.steerRatio = 15.61
       ret.mass = 3405. + STD_CARGO_KG
       ret.maxLateralAccel = 1.2
-      ret.minSteerSpeed = 0.25
+      ret.minSteerSpeed = 16
       param = Panda.FLAG_CHRYSLER_RAM_HD
       CarInterfaceBase.configure_torque_tune(candidate, ret.lateralTuning)
 
@@ -81,6 +81,10 @@ class CarInterface(CarInterfaceBase):
     ret.tireStiffnessFront, ret.tireStiffnessRear = scale_tire_stiffness(ret.mass, ret.wheelbase, ret.centerToFront)
 
     ret.enableBsm = 720 in fingerprint[0]
+
+    for fw in car_fw:
+      if fw.ecu == "eps" and (b"68312176AE" or b"68273275AG") in fw.fwVersion:
+        ret.minSteerSpeed = 0.25
 
     return ret
 
