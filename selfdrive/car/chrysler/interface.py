@@ -54,7 +54,7 @@ class CarInterface(CarInterfaceBase):
       ret.maxLateralAccel = 2.4
       ret.minSteerSpeed = 14.5
       param = Panda.FLAG_CHRYSLER_RAM_DT
-      CarInterfaceBase.configure_torque_tune(candidate, ret.lateralTuning)
+      CarInterfaceBase.configure_torque_tune(candidate, ret.lateralTuning, 0, False)
 
     elif candidate == CAR.RAM_2500:
       ret.steerActuatorDelay = 0.115
