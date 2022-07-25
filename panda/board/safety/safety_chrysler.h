@@ -11,6 +11,9 @@ const int CHRYSLER_RAM_MAX_STEER = 350;
 const int CHRYSLER_RAM_MAX_RATE_UP = 6;
 const int CHRYSLER_RAM_MAX_RATE_DOWN = 6;
 
+const int CHRYSLER_RAM_HD_MAX_STEER = 361;
+const int CHRYSLER_RAM_HD_MAX_RATE_UP = 14;
+const int CHRYSLER_RAM_HD_MAX_RATE_DOWN = 14;
 const int CHRYSLER_RAM_HD_MAX_TORQUE_ERROR = 400; 
 const int CHRYSLER_RAM_HD_MAX_RT_DELTA = 182;
 
@@ -224,15 +227,15 @@ static int chrysler_tx_hook(CANPacket_t *to_send, bool longitudinal_allowed) {
 
     if (controls_allowed) {
       // *** global torque limit check ***
-      const int max_steer = (chrysler_ram || chrysler_ram_hd) ? CHRYSLER_RAM_MAX_STEER : CHRYSLER_MAX_STEER;
+      const int max_steer = chrysler_ram ? CHRYSLER_RAM_MAX_STEER : (chrysler_ram_hd ? CHRYSLER_RAM_HD_MAX_STEER :CHRYSLER_MAX_STEER);
       const int max_rt_delta = (chrysler_ram_hd) ? CHRYSLER_RAM_HD_MAX_RT_DELTA : CHRYSLER_MAX_RT_DELTA;
       const int max_error = (chrysler_ram_hd) ? CHRYSLER_RAM_HD_MAX_TORQUE_ERROR : CHRYSLER_MAX_TORQUE_ERROR;
       
       violation |= max_limit_check(desired_torque, max_steer, -max_steer);
 
       // *** torque rate limit check ***
-      const int max_rate_up = (chrysler_ram || chrysler_ram_hd) ? CHRYSLER_RAM_MAX_RATE_UP : CHRYSLER_MAX_RATE_UP;
-      const int max_rate_down = (chrysler_ram || chrysler_ram_hd) ? CHRYSLER_RAM_MAX_RATE_DOWN : CHRYSLER_MAX_RATE_DOWN;
+      const int max_rate_up = chrysler_ram ? CHRYSLER_RAM_MAX_RATE_UP : (chrysler_ram_hd ? CHRYSLER_RAM_HD_MAX_RATE_UP : CHRYSLER_MAX_RATE_UP);
+      const int max_rate_down = chrysler_ram ? CHRYSLER_RAM_MAX_RATE_DOWN : (chrysler_ram_hd ? CHRYSLER_RAM_HD_MAX_RATE_DOWN : CHRYSLER_MAX_RATE_DOWN);
       violation |= dist_to_meas_check(desired_torque, desired_torque_last,
         &torque_meas, max_rate_up, max_rate_down, max_error);
 
