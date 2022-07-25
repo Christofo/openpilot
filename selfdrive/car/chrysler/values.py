@@ -137,23 +137,23 @@ FW_VERSIONS: Dict[str, Dict[Tuple[capnp.lib.capnp._EnumModule, int, Optional[int
     (Ecu.combinationMeter, 0x742, None): [
       b'68294063AG',
       b'68434860AC',
-      b'68527375AD',
       b'68453503AC',
+      b'68527375AD',
     ],
     (Ecu.srs, 0x744, None): [
+      b'68428609AB',
       b'68441329AB',
       b'68490898AA',
-      b'68428609AB',
       b'68500728AA',
     ],
     (Ecu.esp, 0x747, None): [
-      b'68432418AD',
       b'68432418AB',
-      b'68436004AE',
-      b'68438454AD',
+      b'68432418AD',
       b'68436004AD',
-      b'68535469AB',
+      b'68436004AE',
       b'68438454AC',
+      b'68438454AD',
+      b'68535469AB',
     ],
     (Ecu.fwdCamera, 0x753, None): [
       b'68320950AI',
@@ -161,19 +161,20 @@ FW_VERSIONS: Dict[str, Dict[Tuple[capnp.lib.capnp._EnumModule, int, Optional[int
       b'68320950AL',
       b'68320950AM',
       b'68454268AB',
+      b'68475160AE',
       b'68475160AG',
       b'04672892AB',
-      b'68475160AE',
     ],
     (Ecu.eps, 0x75A, None): [
-      b'68469901AA',
-      b'68552788AA',
-      b'68466110AB',
-      b'68440789AC',
-      b'68552790AA',
+      b'68273275AG', #S0
       b'68312176AE', #S0
       b'68312176AG', #S0
-      b'68273275AG', #S0
+      b'68440789AC',
+      b'68466110AB',
+      b'68469901AA',
+      b'68522585AB',
+      b'68552788AA',
+      b'68552790AA',
     ],
     (Ecu.engine, 0x7e0, None): [
       b'68448163AJ',
@@ -183,57 +184,56 @@ FW_VERSIONS: Dict[str, Dict[Tuple[capnp.lib.capnp._EnumModule, int, Optional[int
     ],
     (Ecu.transmission, 0x7e1, None): [
       b'68360078AL',
-      b'68384328AD',
       b'68360085AL',
       b'68360085AM',
-      b'68502994AD',
+      b'68384328AD',
       b'68445533AB',
-      b'68540431AB',
       b'68484467AC',
+      b'68502994AD',
+      b'68540431AB',
     ],
     (Ecu.gateway, 0x18DACBF1, None): [
       b'68402660AB',
       b'68445283AB',
-      b'68533631AB',
       b'68500483AB',
+      b'68533631AB',
     ],
   },
 
   CAR.RAM_2500: {
     (Ecu.combinationMeter, 0x742, None): [
+      b'68361606AH',
       b'68492693AD',
       b'68525485AB', #TODO: CHECK in newest updat on dongle 5c05760b592aee2c
-      b'68361606AH',
     ],
     (Ecu.srs, 0x744, None): [
+      b'68399794AC',
       b'68428503AA',
       b'68428505AA',
-      b'68399794AC',
     ],
     (Ecu.esp, 0x747, None): [
+      b'68334977AH',
       b'68504022AB',
       b'68530686AB',
-      b'68334977AH',
     ],
     (Ecu.fwdCamera, 0x753, None): [
-      b'68484694AE',
       b'04672895AB',
       b'56029827AG',
+      b'68484694AE',
     ],
     (Ecu.eps, 0x761, None): [
-      b'68507906AB'
       b'68421036AC',
+      b'68507906AB',
     ],
     (Ecu.engine, 0x7e0, None): [
-      b'M2370131MB',
       b'52421132AF',
+      b'M2370131MB',
       b'M2421132MB',
     ],
     #(Ecu.transmission, 0x7e1, None): [
-    #  b'\xf1\x3200000000XX',  # placeholder
+      #b'68475153AD',
       #b'68504640AC',
       #b'68538041AB',
-      #b'68475153AD',
     #],
     (Ecu.gateway, 0x18DACBF1, None): [
       b'68488419AB',
