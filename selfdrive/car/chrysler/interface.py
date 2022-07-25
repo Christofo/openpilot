@@ -8,7 +8,7 @@ from selfdrive.car.interfaces import CarInterfaceBase
 
 class CarInterface(CarInterfaceBase):
   @staticmethod
-  def get_params(candidate, fingerprint=gen_empty_fingerprint(), car_fw=None, disable_radar=False):
+  def get_params(candidate, fingerprint=gen_empty_fingerprint(), car_fw=[], disable_radar=False):
     ret = CarInterfaceBase.get_std_params(candidate, fingerprint)
     ret.carName = "chrysler"
 
@@ -52,7 +52,11 @@ class CarInterface(CarInterfaceBase):
       ret.steerRatio = 16.3
       ret.mass = 2493. + STD_CARGO_KG
       ret.maxLateralAccel = 2.4
-      ret.minSteerSpeed = 14.5
+      for fw in car_fw:
+        if fw.ecu == "eps" and (b"68312176AE" or b"68312176AG" or b"68273275AG") in fw.fwVersion:
+          ret.minSteerSpeed = 0.25
+        else:
+          ret.minSteerSpeed = 14.5
       param = Panda.FLAG_CHRYSLER_RAM_DT
       CarInterfaceBase.configure_torque_tune(candidate, ret.lateralTuning)
 
@@ -82,10 +86,7 @@ class CarInterface(CarInterfaceBase):
 
     ret.enableBsm = 720 in fingerprint[0]
 
-    for fw in car_fw:
-      if fw.ecu == "eps" and (b"68312176AE" or b"68312176AG" or b"68273275AG") in fw.fwVersion:
-        ret.minSteerSpeed = 0.25
-
+    
     return ret
 
   def _update(self, c):
