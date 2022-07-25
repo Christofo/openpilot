@@ -51,12 +51,10 @@ class CarInterface(CarInterfaceBase):
       ret.wheelbase = 3.67
       ret.steerRatio = 16.3
       ret.mass = 2493. + STD_CARGO_KG
-      ret.maxLateralAccel = 2.4
+      ret.minSteerSpeed = 14.5
       for fw in car_fw:
-        if fw.ecu == "eps" and (b"68312176AE" or b"68312176AG" or b"68273275AG") in fw.fwVersion:
-          ret.minSteerSpeed = 0.25
-        else:
-          ret.minSteerSpeed = 14.5
+        if fw.ecu == 'eps' and fw.fwVersion in (b"68312176AE", b"68312176AG", b"68273275AG"):
+          ret.minSteerSpeed = 0.
       param = Panda.FLAG_CHRYSLER_RAM_DT
       CarInterfaceBase.configure_torque_tune(candidate, ret.lateralTuning)
 
@@ -98,7 +96,7 @@ class CarInterface(CarInterfaceBase):
     events = self.create_common_events(ret, extra_gears=[car.CarState.GearShifter.low])
 
     # Low speed steer alert hysteresis logic
-    if self.CP.minSteerSpeed == 0.25:
+    if self.CP.minSteerSpeed == 0:
       self.low_speed_alert = False
     elif self.CP.minSteerSpeed > 0. and ret.vEgo < (self.CP.minSteerSpeed + 0.5):
       self.low_speed_alert = True
