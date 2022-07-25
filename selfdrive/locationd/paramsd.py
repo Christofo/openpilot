@@ -179,9 +179,9 @@ def main(sm=None, pm=None):
       liveParameters.angleOffsetAverageDeg = angle_offset_average
       liveParameters.angleOffsetDeg = angle_offset
       liveParameters.valid = all((
-        abs(liveParameters.angleOffsetAverageDeg) < 10.0,
+        # abs(liveParameters.angleOffsetAverageDeg) < 10.0,
         # abs(liveParameters.angleOffsetDeg) < 10.0,
-        0.2 <= liveParameters.stiffnessFactor <= 5.0
+        # 0.2 <= liveParameters.stiffnessFactor <= 5.0
       ))
       liveParameters.stiffnessFactorStd = float(P[States.STIFFNESS])
       liveParameters.angleOffsetAverageStd = float(P[States.ANGLE_OFFSET])
