@@ -1,8 +1,17 @@
 from opendbc.can.packer import CANPacker
 from common.realtime import DT_CTRL
 from selfdrive.car import apply_toyota_steer_torque_limits
-from selfdrive.car.chrysler.chryslercan import create_lkas_hud, create_lkas_command, create_cruise_buttons
+from selfdrive.car.chrysler.chryslercan import create_lkas_hud, create_lkas_command, create_cruise_buttons, acc_command
 from selfdrive.car.chrysler.values import CAR, RAM_CARS, CarControllerParams
+from common.conversions import Conversions as CV
+from common.params import Params, put_nonblocking
+from cereal import car
+import math
+
+LongCtrlState = car.CarControl.Actuators.LongControlState
+
+# braking
+BRAKE_CHANGE = 0.06
 
 
 class CarController:
@@ -17,6 +26,13 @@ class CarController:
 
     self.packer = CANPacker(dbc_name)
     self.params = CarControllerParams(CP)
+
+    # long
+    self.last_das_3_counter = -1
+    self.accel_steady = 0
+    self.last_brake = None
+    self.vehicleMass = CP.mass
+    self.max_gear = None
 
   def update(self, CC, CS):
     can_sends = []
@@ -37,7 +53,6 @@ class CarController:
     lkas_active = CC.latActive and self.lkas_control_bit_prev
 
     # *** control msgs ***
-
     # cruise buttons
     if (self.frame - self.last_button_frame)*DT_CTRL > 0.05:
       das_bus = 2 if self.CP.carFingerprint in RAM_CARS else 0
@@ -70,6 +85,34 @@ class CarController:
       idx = self.frame // 2
       can_sends.append(create_lkas_command(self.packer, self.CP, int(apply_steer), lkas_control_bit, idx))
 
+    #LONG
+      das_3_counter = CS.das_3['COUNTER']
+
+      if not CC.enabled:
+        self.last_brake = None
+
+      max_gear = 8
+      if CC.actuators.accel <= 0:
+        go_req = False
+        stop_req = False
+        torque = None
+        brake = self.acc_brake(CC.actuators.accel)
+      else:
+        self.last_brake = None
+        go_req = False
+        stop_req = False
+        torque = (self.vehicleMass * CC.actuators.accel * CS.out.vEgo) / (.105 *  CS.gasRpm)
+        torque = max(CS.torqMin + 1, min(CS.torqMax, torque)) # limits
+        brake = None
+
+      can_sends.append(acc_command(self.packer, das_3_counter, CC.enabled,
+                                   go_req,
+                                   torque,
+                                   max_gear,
+                                   stop_req,
+                                   brake,
+                                   CS.das_3))
+
     self.frame += 1
     if not lkas_control_bit and self.lkas_control_bit_prev:
       self.last_lkas_falling_edge = self.frame
@@ -79,3 +122,18 @@ class CarController:
     new_actuators.steer = self.apply_steer_last / self.params.STEER_MAX
 
     return new_actuators, can_sends
+
+  def acc_brake(self, aTarget):
+    brake_target = max(CarControllerParams.ACCEL_MIN, round(aTarget, 2))
+    if self.last_brake is None:
+      self.last_brake = min(0., brake_target / 2)
+    else:
+      tBrake = brake_target
+      lBrake = self.last_brake
+      if tBrake < lBrake:
+        diff = min(BRAKE_CHANGE, (lBrake - tBrake) / 2)
+        self.last_brake = max(lBrake - diff, tBrake)
+      elif tBrake - lBrake > 0.01:  # don't let up unless it's a big enough jump
+        diff = min(BRAKE_CHANGE, (tBrake - lBrake) / 2)
+        self.last_brake = min(lBrake + diff, tBrake)
+    return self.last_brake
