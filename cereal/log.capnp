@@ -1940,6 +1940,5 @@ struct Event {
     gpsLocationDEPRECATED @21 :GpsLocationData;
     uiLayoutStateDEPRECATED @57 :Legacy.UiLayoutState;
     pandaStateDEPRECATED @12 :PandaState;
-    driverStateDEPRECATED @59 :DriverStateDEPRECATED;
   }
 }
