@@ -101,7 +101,7 @@ class CarController:
         brake = self.acc_brake(CC.actuators.accel)
       else:
         self.last_brake = None
-        go_req = False
+        go_req = True
         stop_req = False
         torque = (self.vehicleMass * CC.actuators.accel * CS.out.vEgo) / (.105 *  CS.gasRpm)
         # torque = (self.vehicleMass * CC.actuators.accel * CC.actuators.accel) / (.105 *  CS.gasRpm)
