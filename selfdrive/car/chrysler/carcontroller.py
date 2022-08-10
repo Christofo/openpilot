@@ -13,6 +13,8 @@ LongCtrlState = car.CarControl.Actuators.LongControlState
 # braking
 BRAKE_CHANGE = 0.06
 
+ACCEL_MIN = -3.5
+
 
 class CarController:
   def __init__(self, dbc_name, CP, VM):
@@ -126,7 +128,7 @@ class CarController:
     return new_actuators, can_sends
 
   def acc_brake(self, aTarget):
-    brake_target = max(CarControllerParams.ACCEL_MIN, round(aTarget, 2))
+    brake_target = max(ACCEL_MIN, round(aTarget, 2))
     if self.last_brake is None:
       self.last_brake = min(0., brake_target / 2)
     else:
