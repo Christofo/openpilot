@@ -103,9 +103,9 @@ class CarController:
         self.last_brake = None
         go_req = False
         stop_req = False
-        # torque = (self.vehicleMass * CC.actuators.accel * CS.out.vEgo) / (.105 *  CS.gasRpm)
-        torque = (self.vehicleMass * CC.actuators.accel * CC.actuators.accel) / (.105 *  CS.gasRpm)
-        torque += CS.enginetorque
+        torque = (self.vehicleMass * CC.actuators.accel * CS.out.vEgo) / (.105 *  CS.gasRpm)
+        # torque = (self.vehicleMass * CC.actuators.accel * CC.actuators.accel) / (.105 *  CS.gasRpm)
+        # torque += CS.enginetorque
         torque = max(CS.torqMin + 1, min(CS.torqMax, torque)) # limits
         brake = None
 
