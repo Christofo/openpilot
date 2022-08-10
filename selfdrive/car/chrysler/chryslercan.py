@@ -83,8 +83,8 @@ def acc_command(packer, counter, enabled, go, gas, max_gear, stop, brake, das_3)
   if brake is not None:
     values['ACC_DECEL'] = brake
 
-  values['ENGINE_TORQUE_REQUEST'] = enabled and gas is not None
+  values['ENGINE_TORQUE_REQUEST_MAX'] = enabled and gas is not None
   if gas is not None:
-    values['ENGINE_TORQUE_REQUEST_MAX'] = gas
+    values['ENGINE_TORQUE_REQUEST'] = gas
 
   return packer.make_can_msg("DAS_3", 0, values)
