@@ -90,6 +90,7 @@ class CarState(CarStateBase):
     
     self.torqMax = cp.vl["ECM_TRQ"]["ENGINE_TORQ_MAX"]
     self.gasRpm = cp.vl["ECM_1"]["ENGINE_RPM"]
+    self.enginetorque = cp.vl["ECM_1"]["ENGINE_TORQUE"]
 
     if self.CP.carFingerprint in RAM_CARS:
       self.auto_high_beam = cp_cam.vl["DAS_6"]['AUTO_HIGH_BEAM_ON']  # Auto High Beam isn't Located in this message on chrysler or jeep currently located in 729 message
@@ -166,6 +167,7 @@ class CarState(CarStateBase):
       ("COUNTER", "CRUISE_BUTTONS"),
 
       ("ENGINE_RPM", "ECM_1", 0),
+      ("ENGINE_TORQUE", "ECM_1", 0),
       ("ENGINE_TORQ_MIN", "ECM_TRQ", 0),
       ("ENGINE_TORQ_MAX", "ECM_TRQ", 0),
     ]
